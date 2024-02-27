@@ -22,20 +22,17 @@ public class Main {
                         && kml.getTour().getPlaylist().getFlyTos() != null && !kml.getTour().getPlaylist().getFlyTos().isEmpty()) {
                     KmlRouteData routeData = new KmlRouteData();
 
-                    //parametricky konstruktor nastavi open na 1 a inicializuje StyleMap, Styles a Placemarks
+                    //parametricky konstruktor nastavi open na 1 a inicializuje StyleMap, Tour a Placemarks
                     KmlRouteDocument routeDocument = new KmlRouteDocument("testicek");
-                    routeDocument.initNormalStyles("99ffac59","6");
-                    routeDocument.initHighlightStyles("99ffac59","8");
+                    //nastavenie default stylov trasy
+                    routeDocument.initStyles(true, "99ffac59","6");
+                    routeDocument.initStyles(false,"99ffac59","8");
 
-                    List<KmlRouteStyle> routeStyles = new ArrayList<>();
-                    KmlRouteStyle routeStyle = new KmlRouteStyle();
-                    KmlRouteListStyle routeListStyle = new KmlRouteListStyle();
-                    routeListStyle.setListItemType("radioFolder");
-                    routeListStyle.setBgColor("00ffffff");
-                    routeListStyle.setMaxSnippetLines(2);
-                    routeStyle.setListStyle(routeListStyle);
-                    routeStyles.add(routeStyle);
-                    routeDocument.setStyles(routeStyles);
+                    //v tomto bode mame v dokumente inicializovany gx:playlist s prazdnym zoznamom elementov gx:Flyto
+                    //nastavime synchronny pohyb kamery s pohybom modelu
+
+
+
 
                     KmlRoutePlacemark routePlacemark = new KmlRoutePlacemark();
                     routePlacemark.setName("testicekPlacemark");

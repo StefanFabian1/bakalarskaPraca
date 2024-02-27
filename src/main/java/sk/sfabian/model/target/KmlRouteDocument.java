@@ -4,6 +4,8 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import sk.sfabian.model.source.KmlTour;
+import sk.sfabian.model.target.tour.KmlRouteGxTour;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +28,23 @@ public class KmlRouteDocument {
     @Element
     private KmlRouteStyleMap styleMap;
 
+    @Element(name = "gx:Tour", type = KmlRouteGxTour.class)
+    private KmlRouteGxTour tour;
+
     public KmlRouteDocument() {}
 
     public KmlRouteDocument(String name) {
         this.name = name;
         this.open = 1;
-        this.styles = new ArrayList<>();
+        this.styles =  this.styles = new ArrayList<>();
         this.placemarks = new ArrayList<>();
         this.styleMap = new KmlRouteStyleMap();
         this.styleMap.init();
+        this.tour = new KmlRouteGxTour(name + " Tour");
+    }
+    public void initStyles(boolean normal, String lineColor, String lineSize) {
+        //parametricky konstruktor nastavi iba potrebne udaje
+        this.styles.add(new KmlRouteStyle(normal ? "multiTrack_n" : "multiTrack_h", lineColor, lineSize));
     }
 
     public String getName() {
@@ -75,6 +85,13 @@ public class KmlRouteDocument {
 
     public void setStyleMap(KmlRouteStyleMap styleMap) {
         this.styleMap = styleMap;
+    }
+    public KmlRouteGxTour getTour() {
+        return tour;
+    }
+
+    public void setTour(KmlRouteGxTour tour) {
+        this.tour = tour;
     }
 }
 

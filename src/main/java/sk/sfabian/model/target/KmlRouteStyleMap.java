@@ -35,34 +35,33 @@ public class KmlRouteStyleMap {
     public void setPair(List<KmlRoutePair> pair) {
         this.pair = pair;
     }
+}
+@Root(name = "Pair")
+class KmlRoutePair {
+    @Element
+    private String key;
+    @Element
+    private String styleUrl;
 
-    @Root(name = "Pair")
-    public class KmlRoutePair {
-        @Element
-        private String key;
-        @Element
-        private String styleUrl;
+    public KmlRoutePair() {
+    }
+    public KmlRoutePair(String key, String styleUrl){
+        this.key = key;
+        this.styleUrl = styleUrl;
+    };
+    public String getKey() {
+        return key;
+    }
 
-        public KmlRoutePair() {
-        }
-        public KmlRoutePair(String key, String styleUrl){
-            this.key = key;
-            this.styleUrl = styleUrl;
-        };
-        public String getKey() {
-            return key;
-        }
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-        public void setKey(String key) {
-            this.key = key;
-        }
+    public String getStyleUrl() {
+        return styleUrl;
+    }
 
-        public String getStyleUrl() {
-            return styleUrl;
-        }
-
-        public void setStyleUrl(String styleUrl) {
-            this.styleUrl = styleUrl;
-        }
+    public void setStyleUrl(String styleUrl) {
+        this.styleUrl = styleUrl;
     }
 }

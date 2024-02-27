@@ -5,14 +5,14 @@ import org.simpleframework.xml.Root;
 
 @Root(name = "ListStyle")
 public class KmlRouteListStyle {
-    @Element
+    @Element(required = false)
     private String listItemType;
 
-    @Element
+    @Element(required = false)
     private String bgColor;
 
-    @Element
-    private int maxSnippetLines;
+    @Element(required = false)
+    private Integer maxSnippetLines;
 
     public String getListItemType() {
         return listItemType;
@@ -30,11 +30,11 @@ public class KmlRouteListStyle {
         this.bgColor = bgColor;
     }
 
-    public int getMaxSnippetLines() {
+    public Integer getMaxSnippetLines() {
         return maxSnippetLines;
     }
 
-    public void setMaxSnippetLines(int maxSnippetLines) {
+    public void setMaxSnippetLines(Integer maxSnippetLines) {
         this.maxSnippetLines = maxSnippetLines;
     }
 }

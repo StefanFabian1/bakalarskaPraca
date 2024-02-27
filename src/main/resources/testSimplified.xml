@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<gx:Tour>
+	<name>Test2</name>
+	<gx:Playlist>
+		<gx:AnimatedUpdate>
+			<Update>
+				<targetHref></targetHref>
+				<Change><Placemark targetId="Nitra"><gx:balloonVisibility>1</gx:balloonVisibility></Placemark></Change>
+			</Update>
+		</gx:AnimatedUpdate>
+		<gx:AnimatedUpdate>
+			<Update>
+				<targetHref></targetHref>
+				<Change><Placemark targetId="Váh"><gx:balloonVisibility>1</gx:balloonVisibility></Placemark></Change>
+			</Update>
+		</gx:AnimatedUpdate>
+		<gx:FlyTo>
+			<Camera>
+				<gx:horizFov>59.99999999999999</gx:horizFov>
+				<longitude>18.06347971132529</longitude>
+				<latitude>48.30274947476801</latitude>
+				<altitude>81.00466114629667</altitude>
+				<heading>-71.49954696139504</heading>
+				<tilt>84.46595034483992</tilt>
+				<roll>-15.77580217746992</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+		</gx:FlyTo>
+		<gx:Wait><gx:duration>7.382087999999953</gx:duration>
+		</gx:Wait>
+		<gx:FlyTo>
+			<gx:duration>0.004394599999955062</gx:duration>
+			<gx:flyToMode>smooth</gx:flyToMode>
+			<Camera>
+				<gx:horizFov>59.99999999999999</gx:horizFov>
+				<longitude>18.06347971126892</longitude>
+				<latitude>48.30274947466029</latitude>
+				<altitude>81.00468513429054</altitude>
+				<heading>-71.49954696144816</heading>
+				<tilt>84.46595034484129</tilt>
+				<roll>-15.77580217758451</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+		</gx:FlyTo>
+		<gx:Wait><gx:duration>1.074543699999936</gx:duration>
+		</gx:Wait>
+	</gx:Playlist>
+</gx:Tour>
+</kml>

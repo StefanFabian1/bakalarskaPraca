@@ -15,21 +15,18 @@ public class KmlRouteDocument {
 
     @Element
     private String name;
-
     @Element
     private int open;
-
-    @ElementList(inline = true, entry = "Style", type = KmlRouteStyle.class, required = false)
-    private List<KmlRouteStyle> styles;
-
-    @ElementList(inline = true, entry = "Placemark", type = KmlRoutePlacemark.class, required = false)
-    private List<KmlRoutePlacemark> placemarks;
-
     @Element
     private KmlRouteStyleMap styleMap;
-
+    @ElementList(inline = true, entry = "Style", type = KmlRouteStyle.class, required = false)
+    private List<KmlRouteStyle> styles;
     @Element(name = "gx:Tour", type = KmlRouteGxTour.class)
     private KmlRouteGxTour tour;
+    @ElementList(inline = true, entry = "Placemark", type = KmlRoutePlacemark.class, required = false)
+    private List<KmlRoutePlacemark> placemarks;
+    @Element
+
 
     public KmlRouteDocument() {}
 

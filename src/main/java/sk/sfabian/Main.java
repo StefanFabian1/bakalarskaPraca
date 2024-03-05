@@ -2,12 +2,18 @@ package sk.sfabian;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+import sk.sfabian.business.DataProcessHelper;
 import sk.sfabian.model.source.KmlData;
 import sk.sfabian.model.source.KmlFlyTo;
 import sk.sfabian.model.target.*;
+import sk.sfabian.model.target.tour.KmlRouteFlyTo;
+import sk.sfabian.model.target.tour.KmlRouteLookAt;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Main {
@@ -18,6 +24,11 @@ public class Main {
                 Serializer serializer = new Persister();
                 KmlData kml = serializer.read(KmlData.class, file);
 
+                //TODO vlastna class, bez mappingu na KML subor len s pozadovanymi udajmi... z classy budem citat data
+                //TODO interface pre naplnenie classy
+                //TODO implementacia pre kml bez dokumnetu
+                //TODO implementacia pre KML v dokumente, KMZ
+                //TODO implementacia bez mapovania, respektive pre gps data GPX a podobne
                 if (kml != null && kml.getTour() != null && kml.getTour().getPlaylist() != null
                         && kml.getTour().getPlaylist().getFlyTos() != null && !kml.getTour().getPlaylist().getFlyTos().isEmpty()) {
                     KmlRouteData routeData = new KmlRouteData();
@@ -30,38 +41,16 @@ public class Main {
 
                     //v tomto bode mame v dokumente inicializovany gx:playlist s prazdnym zoznamom elementov gx:Flyto
                     //nastavime synchronny pohyb kamery s pohybom modelu
-
-
-
-
-                    KmlRoutePlacemark routePlacemark = new KmlRoutePlacemark();
-                    routePlacemark.setName("testicekPlacemark");
-                    routePlacemark.setDescription("");
-                    routePlacemark.setStyleUrl("#m_ylw-pushpin");
-
-                    KmlRouteLookAt lookAt = new KmlRouteLookAt();
-                    KmlFlyTo firstFlyTo = kml.getTour().getPlaylist().getFlyTos().get(0);
-                    lookAt.setAltitude(Double.valueOf(firstFlyTo.getCamera().getAltitude()));
-                    lookAt.setHeading(Double.valueOf(firstFlyTo.getCamera().getHeading()));
-                    lookAt.setLatitude(Double.valueOf(firstFlyTo.getCamera().getLatitude()));
-                    lookAt.setRange(1500.0);
-                    lookAt.setTilt(Double.valueOf(firstFlyTo.getCamera().getTilt()));
-                    lookAt.setLongitude(Double.valueOf(firstFlyTo.getCamera().getLongitude()));
-                    lookAt.setAltitudeMode(firstFlyTo.getCamera().getAltitudeMode());
-                    routePlacemark.setLookAt(lookAt);
-
-                    KmlRouteLineString lineString = new KmlRouteLineString();
-                    lineString.setTessellate(1);
-                    lineString.setAltitudeMode("relativeToGround");
-
-                    StringBuilder coordinates = new StringBuilder();
-                    for (KmlFlyTo flyTo : kml.getTour().getPlaylist().getFlyTos()) {
-                        coordinates.append(flyTo.getCamera().getLongitude() + "," + flyTo.getCamera().getLatitude() + "," + flyTo.getCamera().getAltitude() + " ");
+                    List<KmlFlyTo> sourceFlyTos = kml.getTour().getPlaylist().getFlyTos();
+                    List<KmlRouteFlyTo> targetFlyTos = routeDocument.getTour().getPlaylist().getFlyTos();
+                    //prejdeme vsetky flyTos zo source, upravime a pridame do target
+                    //Momentalne ako start timestampu zadame aktualny systemovy cas, v buducnosti sa moze citat z atributu alebo zadat na vstupe
+                    for (KmlFlyTo sourceFlyTo : sourceFlyTos) {
+                        if (sourceFlyTo.getDuration() != null) {
+                            targetFlyTos.add(DataProcessHelper.processFlyTo(sourceFlyTo));
+                        }
                     }
-
-                    lineString.setCoordinates(coordinates.toString());
-                    routePlacemark.setLineString(lineString);
-
+                    KmlRoutePlacemark routePlacemark = new KmlRoutePlacemark(routeDocument.getName(), DataProcessHelper.getTrack());
                     List<KmlRoutePlacemark> routePlacemarks = new ArrayList<>();
                     routePlacemarks.add(routePlacemark);
                     routeDocument.setPlacemarks(routePlacemarks);

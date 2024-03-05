@@ -1,10 +1,16 @@
-package sk.sfabian.model.target;
+package sk.sfabian.model.target.tour;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 @Root(name = "LookAt")
 public class KmlRouteLookAt {
+    @Element(name = "gx:horizFov", required = false)
+    private String horizonFow;
+
+    @Element(name = "gx:TimeSpan", required = false)
+    private KmlRouteTimeSpan timeSpan;
+
     @Element
     private double longitude;
 
@@ -25,6 +31,15 @@ public class KmlRouteLookAt {
 
     @Element(name = "gx:altitudeMode")
     private String altitudeMode;
+
+    public KmlRouteLookAt() {}
+
+    public KmlRouteLookAt(boolean initForTour) {
+        if (initForTour) {
+            this.horizonFow = "59.99999999999999";
+            this.altitudeMode = "relativeToSeaFloor";
+        }
+    }
 
     public double getLongitude() {
         return longitude;
@@ -80,5 +95,20 @@ public class KmlRouteLookAt {
 
     public void setAltitudeMode(String altitudeMode) {
         this.altitudeMode = altitudeMode;
+    }
+    public String getHorizonFow() {
+        return horizonFow;
+    }
+
+    public void setHorizonFow(String horizonFow) {
+        this.horizonFow = horizonFow;
+    }
+
+    public KmlRouteTimeSpan getTimeSpan() {
+        return timeSpan;
+    }
+
+    public void setTimeSpan(KmlRouteTimeSpan timeSpan) {
+        this.timeSpan = timeSpan;
     }
 }

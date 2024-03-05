@@ -2,24 +2,30 @@ package sk.sfabian.model.target;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
+import sk.sfabian.model.target.tour.KmlRouteLookAt;
+import sk.sfabian.model.target.track.KmlRouteTrack;
 
 @Root(name = "Placemark")
 public class KmlRoutePlacemark {
     @Element
     private String name;
-
-    @Element
-    private String description;
-
-    @Element(name = "LookAt", type = KmlRouteLookAt.class)
-    private KmlRouteLookAt lookAt;
-
     @Element
     private String styleUrl;
-
-    @Element(name = "LineString", type = KmlRouteLineString.class)
+    @Element
+    private String description;
+    @Element(name = "gx:Track")
+    private KmlRouteTrack track;
+    @Element(name = "LookAt", type = KmlRouteLookAt.class, required = false)
+    private KmlRouteLookAt lookAt;
+    @Element(name = "LineString", type = KmlRouteLineString.class, required = false)
     private KmlRouteLineString lineString;
-
+    public KmlRoutePlacemark() {}
+    public KmlRoutePlacemark(String documentName, KmlRouteTrack track) {
+        this.name = documentName + " Placemark";
+        this.description = "";
+        this.styleUrl = "#multiTrack";
+        this.track = track;
+    }
     public String getName() {
         return name;
     }

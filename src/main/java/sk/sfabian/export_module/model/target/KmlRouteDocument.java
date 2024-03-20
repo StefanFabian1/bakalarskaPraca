@@ -1,11 +1,11 @@
-package sk.sfabian.model.target;
+package sk.sfabian.export_module.model.target;
 
-import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
-import sk.sfabian.model.source.KmlTour;
-import sk.sfabian.model.target.tour.KmlRouteGxTour;
+import sk.sfabian.export_module.model.target.styles.KmlRouteStyle;
+import sk.sfabian.export_module.model.target.styles.KmlRouteStyleMap;
+import sk.sfabian.export_module.model.target.tour.KmlRouteGxTour;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class KmlRouteDocument {
     private String name;
     @Element
     private int open;
-    @Element
+    @Element(name = "StyleMap")
     private KmlRouteStyleMap styleMap;
     @ElementList(inline = true, entry = "Style", type = KmlRouteStyle.class, required = false)
     private List<KmlRouteStyle> styles;

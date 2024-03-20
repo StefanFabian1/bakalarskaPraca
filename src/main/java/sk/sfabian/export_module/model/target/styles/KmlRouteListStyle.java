@@ -1,4 +1,4 @@
-package sk.sfabian.model.target;
+package sk.sfabian.export_module.model.target.styles;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;

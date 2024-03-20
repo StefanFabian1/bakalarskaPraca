@@ -1,10 +1,8 @@
-package sk.sfabian.model.target;
+package sk.sfabian.export_module.model.target.styles;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
-
-import javax.swing.*;
 
 @Root(name = "Style")
 public class KmlRouteStyle {
@@ -80,30 +78,36 @@ public class KmlRouteStyle {
 @Root(name = "IconStyle")
 class KmlRouteIconStyle {
 
-    @Element
-    private KmlRouteIcon icon;
+    @Element(name = "Icon")
+    private String icon;
 
     public KmlRouteIconStyle() {
-        this.icon = new KmlRouteIcon();
+        this.icon = "";
     }
 
-    public KmlRouteIcon getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(KmlRouteIcon icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 }
 
-@Root(name = "Icon")
-class KmlRouteIcon {
-
-}
-
 @Root(name = "BalloonStyle")
 class KmlRouteBalloonStyle {
+    @Element
+    private String displayMode = "hide";
 
+    public KmlRouteBalloonStyle() {}
+
+    public String getDisplayMode() {
+        return displayMode;
+    }
+
+    public void setDisplayMode(String displayMode) {
+        this.displayMode = displayMode;
+    }
 }
 
 @Root(name = "LineStyle")

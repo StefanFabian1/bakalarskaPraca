@@ -1,4 +1,4 @@
-package sk.sfabian.model.target.tour;
+package sk.sfabian.export_module.model.target.tour;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
@@ -30,14 +30,13 @@ public class KmlRouteLookAt {
     private double range;
 
     @Element(name = "gx:altitudeMode")
-    private String altitudeMode;
+    private static String altitudeMode;
 
     public KmlRouteLookAt() {}
 
     public KmlRouteLookAt(boolean initForTour) {
         if (initForTour) {
-            this.horizonFow = "59.99999999999999";
-            this.altitudeMode = "relativeToSeaFloor";
+            horizonFow = "60";
         }
     }
 
@@ -93,8 +92,8 @@ public class KmlRouteLookAt {
         return altitudeMode;
     }
 
-    public void setAltitudeMode(String altitudeMode) {
-        this.altitudeMode = altitudeMode;
+    public static void setAltitudeMode(String altitudeMode) {
+        KmlRouteLookAt.altitudeMode = altitudeMode;
     }
     public String getHorizonFow() {
         return horizonFow;

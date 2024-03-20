@@ -1,4 +1,4 @@
-package sk.sfabian.model.target.tour;
+package sk.sfabian.export_module.model.target.tour;
 
 import org.simpleframework.xml.Element;
 import sk.sfabian.business.DataProcessHelper;

@@ -3,32 +3,40 @@ package sk.sfabian;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import sk.sfabian.business.DataProcessHelper;
-import sk.sfabian.model.source.KmlData;
-import sk.sfabian.model.source.KmlFlyTo;
-import sk.sfabian.model.target.*;
-import sk.sfabian.model.target.tour.KmlRouteFlyTo;
-import sk.sfabian.model.target.tour.KmlRouteLookAt;
+import sk.sfabian.export_module.model.ProcessOutput;
+import sk.sfabian.export_module.model.source.ConvertedData;
+import sk.sfabian.export_module.model.target.KmlRouteData;
+import sk.sfabian.export_module.model.target.KmlRouteDocument;
+import sk.sfabian.export_module.model.target.KmlRoutePlacemark;
+import sk.sfabian.import_module.ProcessInput;
+import sk.sfabian.import_module.ProcessInputFactory;
+import sk.sfabian.import_module.kml_tour.model.KmlData;
+import sk.sfabian.import_module.kml_tour.model.KmlFlyTo;
+import sk.sfabian.export_module.model.target.tour.KmlRouteFlyTo;
 
 import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Main {
         public static void main(String[] args) {
             System.out.println("Hello World");
             try {
-                File file = new File("src/main/resources/Test2withoutdocumetn.kml");
+                //TODO to bude volanie na GUI
+                //TODO z GUI sa natiahne File, zatial takto:
+                File file = new File("C:/bc/testHavaria.kml");
+                ProcessInput input = new ProcessInputFactory().createProcessInput(file);
+                List<ConvertedData> convertedDataList = input.convertInput(file);
+                //TODO spracujeme data na kml a zapiseme vysledok
+                ProcessOutput output = new ProcessOutput();
+                KmlRouteData outputData = output.process(convertedDataList);
+                output.writeFile(outputData, "src/main/resources/output.kml");
+/*
+                //File file = new File("src/main/resources/Test2withoutdocumetn.kml");
+
+
                 Serializer serializer = new Persister();
                 KmlData kml = serializer.read(KmlData.class, file);
-
-                //TODO vlastna class, bez mappingu na KML subor len s pozadovanymi udajmi... z classy budem citat data
-                //TODO interface pre naplnenie classy
-                //TODO implementacia pre kml bez dokumnetu
-                //TODO implementacia pre KML v dokumente, KMZ
-                //TODO implementacia bez mapovania, respektive pre gps data GPX a podobne
                 if (kml != null && kml.getTour() != null && kml.getTour().getPlaylist() != null
                         && kml.getTour().getPlaylist().getFlyTos() != null && !kml.getTour().getPlaylist().getFlyTos().isEmpty()) {
                     KmlRouteData routeData = new KmlRouteData();
@@ -51,12 +59,12 @@ public class Main {
                         }
                     }
                     KmlRoutePlacemark routePlacemark = new KmlRoutePlacemark(routeDocument.getName(), DataProcessHelper.getTrack());
+
                     List<KmlRoutePlacemark> routePlacemarks = new ArrayList<>();
                     routePlacemarks.add(routePlacemark);
                     routeDocument.setPlacemarks(routePlacemarks);
 
                     routeData.setDocument(routeDocument);
-
                     try {
                         Persister persister = new Persister();
                         File outputFile = new File("src/main/resources/output.kml");
@@ -65,12 +73,15 @@ public class Main {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
 
+                }
+*/
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
         }
 
 }

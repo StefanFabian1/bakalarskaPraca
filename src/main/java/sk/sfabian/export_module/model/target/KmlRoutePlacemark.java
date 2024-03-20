@@ -1,9 +1,8 @@
-package sk.sfabian.model.target;
+package sk.sfabian.export_module.model.target;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
-import sk.sfabian.model.target.tour.KmlRouteLookAt;
-import sk.sfabian.model.target.track.KmlRouteTrack;
+import sk.sfabian.export_module.model.target.track.KmlRouteTrack;
 
 @Root(name = "Placemark")
 public class KmlRoutePlacemark {
@@ -15,10 +14,6 @@ public class KmlRoutePlacemark {
     private String description;
     @Element(name = "gx:Track")
     private KmlRouteTrack track;
-    @Element(name = "LookAt", type = KmlRouteLookAt.class, required = false)
-    private KmlRouteLookAt lookAt;
-    @Element(name = "LineString", type = KmlRouteLineString.class, required = false)
-    private KmlRouteLineString lineString;
     public KmlRoutePlacemark() {}
     public KmlRoutePlacemark(String documentName, KmlRouteTrack track) {
         this.name = documentName + " Placemark";
@@ -42,14 +37,6 @@ public class KmlRoutePlacemark {
         this.description = description;
     }
 
-    public KmlRouteLookAt getLookAt() {
-        return lookAt;
-    }
-
-    public void setLookAt(KmlRouteLookAt lookAt) {
-        this.lookAt = lookAt;
-    }
-
     public String getStyleUrl() {
         return styleUrl;
     }
@@ -57,12 +44,11 @@ public class KmlRoutePlacemark {
     public void setStyleUrl(String styleUrl) {
         this.styleUrl = styleUrl;
     }
-
-    public KmlRouteLineString getLineString() {
-        return lineString;
+    public KmlRouteTrack getTrack() {
+        return track;
     }
 
-    public void setLineString(KmlRouteLineString lineString) {
-        this.lineString = lineString;
+    public void setTrack(KmlRouteTrack track) {
+        this.track = track;
     }
 }

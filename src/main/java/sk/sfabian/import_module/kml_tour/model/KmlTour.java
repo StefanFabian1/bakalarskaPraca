@@ -1,4 +1,4 @@
-package sk.sfabian.model.source;
+package sk.sfabian.import_module.kml_tour.model;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;

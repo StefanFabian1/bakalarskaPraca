@@ -1,10 +1,10 @@
-package sk.sfabian.model.source;
+package sk.sfabian.import_module.kml_tour.model;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 @Root(name = "gx:Wait")
-public class KmlWait implements KmlElement {
+public class KmlWait {
     @Element(name = "duration")
     private String duration;
 

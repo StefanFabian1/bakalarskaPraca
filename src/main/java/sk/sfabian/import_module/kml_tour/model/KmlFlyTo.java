@@ -1,13 +1,13 @@
-package sk.sfabian.model.source;
+package sk.sfabian.import_module.kml_tour.model;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 @Root(name = "gx:FlyTo", strict = false)
-public class KmlFlyTo implements KmlElement {
+public class KmlFlyTo {
     @Element(name = "duration", required = false)
     private String duration;
-    @Element(name = "Camera", type = KmlCamera.class)
+    @Element(name = "Camera", type = KmlCamera.class, required = false)
     private KmlCamera camera;
 
     public KmlCamera getCamera() {

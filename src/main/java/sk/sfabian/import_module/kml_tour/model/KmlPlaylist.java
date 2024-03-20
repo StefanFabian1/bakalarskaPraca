@@ -1,4 +1,4 @@
-package sk.sfabian.model.source;
+package sk.sfabian.import_module.kml_tour.model;
 
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
@@ -6,7 +6,7 @@ import org.simpleframework.xml.Root;
 import java.util.List;
 
 @Root(name = "gx:Playlist",  strict = false)
-public class KmlPlaylist implements KmlElement {
+public class KmlPlaylist {
 
     @ElementList(inline = true, entry = "FlyTo", type = KmlFlyTo.class)
     private List<KmlFlyTo> flyTos;

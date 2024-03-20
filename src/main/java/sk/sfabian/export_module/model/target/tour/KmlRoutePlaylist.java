@@ -1,9 +1,7 @@
-package sk.sfabian.model.target.tour;
+package sk.sfabian.export_module.model.target.tour;
 
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
-import sk.sfabian.model.source.KmlElement;
-import sk.sfabian.model.source.KmlFlyTo;
 
 import java.util.ArrayList;
 import java.util.List;

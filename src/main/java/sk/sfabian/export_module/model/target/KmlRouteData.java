@@ -1,4 +1,4 @@
-package sk.sfabian.model.target;
+package sk.sfabian.export_module.model.target;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;

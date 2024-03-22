@@ -1,7 +1,7 @@
 package sk.sfabian.export_module.model.target.tour;
 
 import org.simpleframework.xml.Element;
-import sk.sfabian.business.DataProcessHelper;
+import sk.sfabian.export_module.model.ProcessOutput;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,8 +11,8 @@ public class KmlRouteTimeSpan {
 
     public KmlRouteTimeSpan() {}
     public KmlRouteTimeSpan(LocalDateTime start, LocalDateTime actual) {
-        this.begin = start.format(DataProcessHelper.formatter);
-        this.end = actual.format(DataProcessHelper.formatter);
+        this.begin = start.format(ProcessOutput.formatter);
+        this.end = actual.format(ProcessOutput.formatter);
     }
     @Element
     private String begin;

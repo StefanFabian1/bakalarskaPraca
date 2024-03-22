@@ -17,7 +17,7 @@ public class KmlRouteModel {
 
     public KmlRouteModel() {}
     public KmlRouteModel(String name) {
-        this.scale = new KmlRouteScale(4);
+        this.scale = new KmlRouteScale(6);
         this.link = new KmlRouteLink(name);
         this.resourceMap = "";
     }

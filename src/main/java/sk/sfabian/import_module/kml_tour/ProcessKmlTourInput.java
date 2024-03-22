@@ -2,6 +2,7 @@ package sk.sfabian.import_module.kml_tour;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+import sk.sfabian.CustomProperties;
 import sk.sfabian.export_module.model.source.ConvertedData;
 import sk.sfabian.import_module.ProcessInput;
 import sk.sfabian.import_module.kml_tour.model.KmlCamera;
@@ -24,6 +25,7 @@ public class ProcessKmlTourInput extends ProcessInput {
             KmlData kml = serializer.read(KmlData.class, file);
             if (kml != null && kml.getTour() != null && kml.getTour().getPlaylist() != null
                     && kml.getTour().getPlaylist().getFlyTos() != null && !kml.getTour().getPlaylist().getFlyTos().isEmpty()) {
+                CustomProperties.documentName = kml.getTour().getName();
                 for (KmlFlyTo flyTo : kml.getTour().getPlaylist().getFlyTos()) {
                     if (flyTo.getCamera() != null) {
                         ConvertedData convertedData = new ConvertedData();

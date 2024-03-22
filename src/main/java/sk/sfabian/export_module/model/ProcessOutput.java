@@ -1,7 +1,7 @@
 package sk.sfabian.export_module.model;
 
 import org.simpleframework.xml.core.Persister;
-import sk.sfabian.business.DataProcessHelper;
+import sk.sfabian.CustomProperties;
 import sk.sfabian.export_module.model.source.ConvertedData;
 import sk.sfabian.export_module.model.target.KmlRouteData;
 import sk.sfabian.export_module.model.target.KmlRouteDocument;
@@ -11,7 +11,6 @@ import sk.sfabian.export_module.model.target.tour.KmlRouteLookAt;
 import sk.sfabian.export_module.model.target.tour.KmlRouteTimeSpan;
 import sk.sfabian.export_module.model.target.track.KmlRouteTrack;
 import sk.sfabian.export_module.model.target.track.kml_model.KmlRouteModel;
-import sk.sfabian.import_module.kml_tour.model.KmlFlyTo;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -20,25 +19,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProcessOutput {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'");
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'");
     private static LocalDateTime actualFlyTime = null;
     public KmlRouteData process(List<ConvertedData> convertedDataList) {
-        //TODO tieto atributy sa budu citat z GUI
-        Double cameraDistance = 1600.0;
-        String documentName = "test";
-        String lineColor = "99ffac59";
-        int lineSize = 6;
         //TODO model bude iba String nie cela cesta, bude pribaleny vo vystupnom kmz
         String modelName = "C:\\bc\\Red_low_poly_car.dae";
 
         KmlRouteData routeData = new KmlRouteData();
 
         //parametricky konstruktor nastavi open na 1 a inicializuje StyleMap, Tour a Placemarks
-        KmlRouteDocument routeDocument = new KmlRouteDocument(documentName);
+        KmlRouteDocument routeDocument = new KmlRouteDocument(CustomProperties.documentName);
 
         //nastavenie stylov ciary
-        routeDocument.initStyles(true, lineColor,String.valueOf(lineSize));
-        routeDocument.initStyles(false,lineColor,String.valueOf(lineSize + (lineSize / 3)));
+        routeDocument.initStyles(true, CustomProperties.lineColor,String.valueOf(CustomProperties.lineSize));
+        routeDocument.initStyles(false,CustomProperties.lineColor,String.valueOf(CustomProperties.lineSize + (CustomProperties.lineSize / 3)));
 
         //inicaializacia objektu track
         KmlRouteTrack track = new KmlRouteTrack();
@@ -59,7 +53,7 @@ public class ProcessOutput {
             initialFlyTo.getLookAt().setAltitude(convertedDataList.get(0).getAltitude());
             initialFlyTo.getLookAt().setHeading(convertedDataList.get(0).getHeading());
             initialFlyTo.getLookAt().setTilt(convertedDataList.get(0).getTilt());
-            initialFlyTo.getLookAt().setRange(cameraDistance);
+            initialFlyTo.getLookAt().setRange(CustomProperties.cameraDistance);
             targetFlyTos.add(initialFlyTo);
         }
         for (ConvertedData data : convertedDataList) {
@@ -72,11 +66,11 @@ public class ProcessOutput {
                 flyTo.getLookAt().setAltitude(data.getAltitude());
                 flyTo.getLookAt().setHeading(data.getHeading());
                 flyTo.getLookAt().setTilt(data.getTilt());
-                flyTo.getLookAt().setRange(cameraDistance);
+                flyTo.getLookAt().setRange(CustomProperties.cameraDistance);
                 targetFlyTos.add(flyTo);
                 track.getWhenList().add(formatter.format(actualFlyTime));
                 track.getCoordList().add(data.getLongitude() + " " + data.getLatitude() + " " + data.getAltitude());
-                track.getAnglesList().add(data.getHeading() + " " + (data.getTilt() - 90) + " " + data.getRoll());
+                track.getAnglesList().add(data.getHeading() + " " + data.getTilt() + " " + data.getRoll());
             }
         }
         KmlRoutePlacemark routePlacemark = new KmlRoutePlacemark(routeDocument.getName(), track);

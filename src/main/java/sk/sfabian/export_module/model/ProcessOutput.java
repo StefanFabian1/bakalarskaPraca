@@ -32,7 +32,7 @@ public class ProcessOutput {
 
         //nastavenie stylov ciary
         routeDocument.initStyles(true, CustomProperties.lineColor,String.valueOf(CustomProperties.lineSize));
-        routeDocument.initStyles(false,CustomProperties.lineColor,String.valueOf(CustomProperties.lineSize + (CustomProperties.lineSize / 3)));
+        routeDocument.initStyles(false,CustomProperties.lineColorHighlighted,String.valueOf(CustomProperties.lineSize + (CustomProperties.lineSize / 3)));
 
         //inicaializacia objektu track
         KmlRouteTrack track = new KmlRouteTrack();

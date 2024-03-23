@@ -19,6 +19,8 @@ public class KmlRouteStyle {
 
     @Element(name = "LineStyle", type = KmlRouteLineStyle.class)
     private KmlRouteLineStyle lineStyle;
+    @Element(name = "LabelStyle", type = KmlRouteLabelStyle.class)
+    private KmlRouteLabelStyle labelStyle;
 
     public KmlRouteStyle() {
     }
@@ -31,6 +33,11 @@ public class KmlRouteStyle {
         //list style nebudem pouzivat, necham prazdny
         this.listStyle = new KmlRouteListStyle();
         this.lineStyle = new KmlRouteLineStyle(lineColor, lineSize);
+        if (id.equals("multiTrack_h")) {
+            this.labelStyle = new KmlRouteLabelStyle("#ffffffff");
+        } else {
+            this.labelStyle = new KmlRouteLabelStyle("#00ffffff");
+        }
     }
 
     public String getId() {
@@ -141,5 +148,26 @@ class KmlRouteLineStyle {
 
     public void setWidth(String width) {
         this.width = width;
+    }
+}
+
+@Root(name = "LabelStyle")
+class KmlRouteLabelStyle {
+    @Element
+    private String color;
+
+    public KmlRouteLabelStyle() {
+    }
+
+    public KmlRouteLabelStyle(String color) {
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

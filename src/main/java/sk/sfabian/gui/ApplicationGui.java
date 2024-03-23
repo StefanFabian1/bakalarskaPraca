@@ -14,7 +14,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sk.sfabian.CustomProperties;
 import sk.sfabian.export_module.model.ProcessOutput;
-import sk.sfabian.export_module.model.source.ConvertedData;
 import sk.sfabian.export_module.model.target.KmlRouteData;
 import sk.sfabian.import_module.ImportModuleException;
 import sk.sfabian.import_module.ProcessInput;
@@ -25,8 +24,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
 import java.util.prefs.Preferences;
 
 public class ApplicationGui extends Application {
@@ -56,7 +53,11 @@ public class ApplicationGui extends Application {
     @FXML
     private Label exportModuleStatus;
     @FXML
-    private ComboBox<Integer> lineSize;
+    private ComboBox<String> lineSize;
+    @FXML
+    private CheckBox selectShowTrack;
+    @FXML
+    private Pane trackSettingsPane;
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -127,9 +128,10 @@ public class ApplicationGui extends Application {
             exportModulPane.setVisible(true);
             documentName.setPromptText(CustomProperties.documentName);
             cameraDistance.setPromptText("1600.0");
-            lineSize.getItems().addAll(4,6,8,10,12);
-            lineSize.setValue(6);
-            CustomProperties.lineColor = "#00dbf8";
+            lineSize.getItems().addAll("4", "6", "8", "10", "12");
+            lineSize.setValue("6");
+            CustomProperties.lineColor = "#bb00dbf8";
+            CustomProperties.lineColorHighlighted = "#ff00dbf8";
         } else {
             importModuleStatus.setTextFill(Paint.valueOf("#ff2626"));
             importModuleStatus.setText("Nepodarilo sa spracovať súbor !");
@@ -154,7 +156,13 @@ public class ApplicationGui extends Application {
             targetFolderPath.setText(selectedFolderPath);
             convertButton.setDisable(false);
             CustomProperties.pathToTarget = selectedFolderPath;
+            exportModuleStatus.setTextFill(Paint.valueOf("#5636f5"));
+            exportModuleStatus.setText("");
         } else {
+            CustomProperties.pathToTarget = null;
+            exportModuleStatus.setTextFill(Paint.valueOf("#ff2626"));
+            exportModuleStatus.setText("Musíte zvoliť cieľový priečinok !");
+            targetFolderPath.setText("");
             convertButton.setDisable(true);
         }
     }
@@ -173,7 +181,7 @@ public class ApplicationGui extends Application {
                     exportModuleStatus.setText("Vzdialenosť kamery musí byť kladné číslo !");
                     return;
                 }
-                if (Double.valueOf(cameraDistance.getText()) < 1) {
+                if (Double.parseDouble(cameraDistance.getText()) < 1) {
                     exportModuleStatus.setText("Vzdialenosť kamery musí byť kladné číslo !");
                     return;
                 }
@@ -181,13 +189,28 @@ public class ApplicationGui extends Application {
             } else {
                 CustomProperties.cameraDistance = Double.valueOf(cameraDistance.getPromptText());
             }
-            if (lineSize.getValue() != null && lineSize.getValue() > 0) {
-                CustomProperties.lineSize = lineSize.getValue();
-            } else {
+            boolean lineSizeError = true;
+            if (lineSize.getValue() != null && !lineSize.getValue().isEmpty()) {
+                try {
+                    int lineWidth = Integer.parseInt(lineSize.getValue());
+                    if (lineWidth > 0) {
+                        CustomProperties.lineSize = lineWidth;
+                        lineSizeError = false;
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+            if (lineSizeError) {
                 exportModuleStatus.setText("Hrúbka čiary musí byť celé kladné číslo !");
                 return;
             }
-            CustomProperties.pathToTarget = CustomProperties.pathToTarget + "\\" + ((targetFileName.getText() == null || targetFileName.getText().equals("")) ? "output" : targetFileName.getText()) + ".kml";
+            if (!selectShowTrack.isSelected()) {
+                CustomProperties.lineColor = "00ffffff";
+                CustomProperties.lineColorHighlighted = "00ffffff";
+            }
+            if (!CustomProperties.pathToTarget.endsWith(".kml")) {
+                CustomProperties.pathToTarget = CustomProperties.pathToTarget + "\\" + ((targetFileName.getText() == null || targetFileName.getText().equals("")) ? "output" : targetFileName.getText()) + ".kml";
+            }
             ProcessOutput output = new ProcessOutput();
             KmlRouteData outputData = output.process(processInputResult.getConvertedData());
             output.writeFile(outputData, CustomProperties.pathToTarget);
@@ -195,12 +218,17 @@ public class ApplicationGui extends Application {
     }
 
     public void pickColor() {
-        CustomProperties.lineColor = toHexString(lineColorPicker.getValue());
+        CustomProperties.lineColor = toHexString(lineColorPicker.getValue()).replace("#", "#bb");
+        CustomProperties.lineColorHighlighted = toHexString(lineColorPicker.getValue()).replace("#", "#ff");
     }
     private String toHexString(Color color) {
         return String.format("#%02X%02X%02X",
-                (int) (color.getRed() * 255),
+                (int) (color.getBlue() * 255),
                 (int) (color.getGreen() * 255),
-                (int) (color.getBlue() * 255));
+                (int) (color.getRed() * 255));
+    }
+
+    public void toggleShowTrack() {
+        trackSettingsPane.setVisible(!trackSettingsPane.isVisible());
     }
 }

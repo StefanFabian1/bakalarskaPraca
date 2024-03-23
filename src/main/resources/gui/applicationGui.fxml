@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -33,19 +34,25 @@
                      <Font name="System Bold" size="12.0" />
                   </font>
                </Label>
-               <Label layoutX="279.0" layoutY="14.0" text="Vzdialenosť kamery:" />
-               <TextField fx:id="cameraDistance" layoutX="278.0" layoutY="31.0" prefHeight="25.0" prefWidth="131.0" />
+               <Label layoutX="247.0" layoutY="14.0" text="Vzdialenosť kamery:" />
+               <TextField fx:id="cameraDistance" layoutX="246.0" layoutY="31.0" prefHeight="25.0" prefWidth="131.0" />
                <Label layoutX="14.0" layoutY="14.0" text="Názov trasy v Google Earth:" />
                <TextField fx:id="documentName" layoutX="14.0" layoutY="31.0" prefHeight="25.0" prefWidth="218.0" />
-               <Label layoutX="420.0" layoutY="35.0" text="metrov" />
-               <Label layoutX="278.0" layoutY="73.0" text="Hrúbka čiary trasy:" />
-               <Label layoutX="13.0" layoutY="71.0" text="Farba čiary trasy:" />
-               <ColorPicker fx:id="lineColorPicker" layoutX="13.0" layoutY="88.0" onAction="#pickColor">
-                  <value>
-                     <Color green="0.8600876927375793" blue="0.9736841917037964" />
-                  </value></ColorPicker>
-            <ComboBox fx:id="lineSize" editable="true" layoutX="278.0" layoutY="90.0" prefHeight="25.0" prefWidth="58.0">
+               <Label layoutX="385.0" layoutY="35.0" text="metrov" />
+            <CheckBox fx:id="selectShowTrack" layoutX="17.0" layoutY="85.0" mnemonicParsing="false" onAction="#toggleShowTrack" text="Zobraziť trasu (môlze pôsobiť rušivo)" />
+            <Pane fx:id="trackSettingsPane" layoutX="240.0" layoutY="65.0" prefHeight="58.0" prefWidth="282.0" visible="false">
+               <children>
+                     <Label layoutX="146.0" layoutY="-4.0" text="Hrúbka čiary trasy:" />
+                     <Label layoutX="7.0" layoutY="-5.0" text="Farba čiary trasy:" />
+                     <ColorPicker fx:id="lineColorPicker" layoutX="7.0" layoutY="17.0" onAction="#pickColor">
+                        <value>
+                           <Color green="0.8588235378265381" blue="0.9725490212440491" />
+                        </value>
+                  </ColorPicker>
+                  <ComboBox fx:id="lineSize" editable="true" layoutX="146.0" layoutY="16.0" prefHeight="25.0" prefWidth="58.0">
             </ComboBox>
+               </children>
+            </Pane>
             </children>
          </Pane>
       </children>

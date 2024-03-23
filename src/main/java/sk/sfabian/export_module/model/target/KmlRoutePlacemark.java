@@ -16,7 +16,7 @@ public class KmlRoutePlacemark {
     private KmlRouteTrack track;
     public KmlRoutePlacemark() {}
     public KmlRoutePlacemark(String documentName, KmlRouteTrack track) {
-        this.name = documentName + " Placemark";
+        this.name = documentName + " placemark";
         this.description = "";
         this.styleUrl = "#multiTrack";
         this.track = track;

@@ -37,7 +37,7 @@ public class KmlRouteDocument {
         this.placemarks = new ArrayList<>();
         this.styleMap = new KmlRouteStyleMap();
         this.styleMap.init();
-        this.tour = new KmlRouteGxTour(name + " Tour");
+        this.tour = new KmlRouteGxTour(name + " tour");
     }
     public void initStyles(boolean normal, String lineColor, String lineSize) {
         //parametricky konstruktor nastavi iba potrebne udaje

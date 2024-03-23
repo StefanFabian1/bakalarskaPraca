@@ -64,13 +64,13 @@ public class ProcessOutput {
                 flyTo.getLookAt().setLongitude(data.getLongitude());
                 flyTo.getLookAt().setLatitude(data.getLatitude());
                 flyTo.getLookAt().setAltitude(data.getAltitude());
-                flyTo.getLookAt().setHeading(data.getHeading());
-                flyTo.getLookAt().setTilt(data.getTilt());
+                flyTo.getLookAt().setHeading(data.getHeading()-15);
+                flyTo.getLookAt().setTilt(data.getTilt()-30);
                 flyTo.getLookAt().setRange(CustomProperties.cameraDistance);
                 targetFlyTos.add(flyTo);
                 track.getWhenList().add(formatter.format(actualFlyTime));
                 track.getCoordList().add(data.getLongitude() + " " + data.getLatitude() + " " + data.getAltitude());
-                track.getAnglesList().add(data.getHeading() + " " + data.getTilt() + " " + data.getRoll());
+                track.getAnglesList().add((data.getHeading() + 0) + " " + (data.getTilt() + 90)*(-1) + " " + (-data.getRoll()));
             }
         }
         KmlRoutePlacemark routePlacemark = new KmlRoutePlacemark(routeDocument.getName(), track);

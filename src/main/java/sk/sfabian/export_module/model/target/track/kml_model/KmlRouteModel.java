@@ -20,6 +20,11 @@ public class KmlRouteModel {
         this.scale = new KmlRouteScale(6);
         this.link = new KmlRouteLink(name);
         this.resourceMap = "";
+        this.orientation = new KmlRouteOrientation();
+        this.orientation.setHeading(String.valueOf(0));
+        this.orientation.setTilt(String.valueOf(180));
+        this.orientation.setRoll(String.valueOf(0));
+
     }
     public KmlRouteLocation getLocation() {
         return location;

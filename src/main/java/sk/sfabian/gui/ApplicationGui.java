@@ -16,21 +16,24 @@ import sk.sfabian.CustomProperties;
 import sk.sfabian.export_module.model.ProcessOutput;
 import sk.sfabian.export_module.model.source.ConvertedData;
 import sk.sfabian.export_module.model.target.KmlRouteData;
+import sk.sfabian.import_module.ImportModuleException;
 import sk.sfabian.import_module.ProcessInput;
 import sk.sfabian.import_module.ProcessInputFactory;
+import sk.sfabian.import_module.ProcessInputResult;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.prefs.Preferences;
 
 public class ApplicationGui extends Application {
     private static final String LAST_USED_FOLDER_KEY = "last_used_folder";
     private static final String LAST_USED_EXPORT_FOLDER_KEY = "last_used_export_folder";
     private Preferences prefs = Preferences.userNodeForPackage(ApplicationGui.class);
-    private List<ConvertedData> convertedDataList;
+    private ProcessInputResult processInputResult;
 
     @FXML
     private TextField sourcePath;
@@ -69,7 +72,7 @@ public class ApplicationGui extends Application {
             throw new RuntimeException(e);
         }
     }
-    public void chooseFile() {
+    public void chooseFile() throws ImportModuleException {
         FileChooser fileChooser = new FileChooser();
         String lastUsedFolder = prefs.get(LAST_USED_FOLDER_KEY, null);
         if (lastUsedFolder != null) {
@@ -101,16 +104,26 @@ public class ApplicationGui extends Application {
             startImportModule(selectedFile);
         } else {
             exportModulPane.setVisible(false);
+            importModuleStatus.setTextFill(Paint.valueOf("#ff2626"));
+            importModuleStatus.setText("Nie je vybraný žiaden súbor !");
         }
     }
-    private void startImportModule(File selectedFile) {
+    private void startImportModule(File selectedFile) throws ImportModuleException {
         prefs.put(LAST_USED_FOLDER_KEY, selectedFile.getParent());
         sourcePath.setText(selectedFile.getAbsolutePath());
-        ProcessInput input = new ProcessInputFactory().createProcessInput(selectedFile);
-        convertedDataList = input.convertInput(selectedFile);
-        if (convertedDataList != null && !convertedDataList.isEmpty()) {
+        try {
+            ProcessInput input = new ProcessInputFactory().createProcessInput(selectedFile);
+            processInputResult = input.convertInput(selectedFile);
+        } catch (ImportModuleException importException) {
+            importModuleStatus.setTextFill(Paint.valueOf("#ff2626"));
+            importModuleStatus.setText(importException.getMessage());
+            exportModulPane.setVisible(false);
+            importException.printStackTrace();
+            return;
+        }
+        if (processInputResult != null && processInputResult.getConvertedData() != null && !processInputResult.getConvertedData().isEmpty()) {
             importModuleStatus.setTextFill(Paint.valueOf("#5636f5"));
-            importModuleStatus.setText("Súbor úspešne načítaný");
+            importModuleStatus.setText((processInputResult.getMessage() != null && !processInputResult.getMessage().equals("")) ? processInputResult.getMessage() : "Súbor úspešne načítaný");
             exportModulPane.setVisible(true);
             documentName.setPromptText(CustomProperties.documentName);
             cameraDistance.setPromptText("1600.0");
@@ -119,8 +132,7 @@ public class ApplicationGui extends Application {
             CustomProperties.lineColor = "#00dbf8";
         } else {
             importModuleStatus.setTextFill(Paint.valueOf("#ff2626"));
-            //TODO error z nacitania
-            importModuleStatus.setText("Nie je vybraný žiaden súbor !");
+            importModuleStatus.setText("Nepodarilo sa spracovať súbor !");
             exportModulPane.setVisible(false);
         }
     }
@@ -148,9 +160,11 @@ public class ApplicationGui extends Application {
     }
 
     public void startExport() {
-        if (convertedDataList != null && !convertedDataList.isEmpty()) {
-            if (documentName != null && !documentName.equals("")) {
+        if (processInputResult != null && processInputResult.getConvertedData() != null && !processInputResult.getConvertedData().isEmpty()) {
+            if (documentName != null && documentName.getText() != null && !documentName.getText().equals("")) {
                 CustomProperties.documentName = documentName.getText();
+            } else {
+                CustomProperties.documentName = documentName.getPromptText();
             }
             if (cameraDistance.getText() != null && !cameraDistance.getText().equals("")) {
                 try {
@@ -167,7 +181,7 @@ public class ApplicationGui extends Application {
             } else {
                 CustomProperties.cameraDistance = Double.valueOf(cameraDistance.getPromptText());
             }
-            if (lineSize.getValue() != null && lineSize.getValue().intValue() > 0) {
+            if (lineSize.getValue() != null && lineSize.getValue() > 0) {
                 CustomProperties.lineSize = lineSize.getValue();
             } else {
                 exportModuleStatus.setText("Hrúbka čiary musí byť celé kladné číslo !");
@@ -175,7 +189,7 @@ public class ApplicationGui extends Application {
             }
             CustomProperties.pathToTarget = CustomProperties.pathToTarget + "\\" + ((targetFileName.getText() == null || targetFileName.getText().equals("")) ? "output" : targetFileName.getText()) + ".kml";
             ProcessOutput output = new ProcessOutput();
-            KmlRouteData outputData = output.process(convertedDataList);
+            KmlRouteData outputData = output.process(processInputResult.getConvertedData());
             output.writeFile(outputData, CustomProperties.pathToTarget);
         }
     }
